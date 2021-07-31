@@ -9,17 +9,19 @@ const IndexPage = () => {
     const [session, loading] = useSession();
     console.log(session?.user);
     return (
-        <>
+        <div className={style.hero}>
             {!session && <>
                 Not signed in <br/>
                 <button onClick={() => signIn()}>Sign in</button>
             </>}
             {session && <>
-                Signed in as {session.user.name}  &nbsp;&nbsp;{session.user.email} <br/>
+                <p className={style.signedUser}>
+                Signed in as {session.user.name}  &nbsp;&nbsp;{session.user.email}
+                </p>
                 <Image src={session.user.image} width={96} height={96} alt ="user avatar" />
-                <button onClick={() => signOut()}>Sign out</button>
+                <button  className={style.signInButton} onClick={() => signOut()}>Sign out</button>
             </>}
-        </>
+        </div>
     );
 };
 

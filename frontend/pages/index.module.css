@@ -1,3 +1,14 @@
 .hero {
     margin: 3em;
 }
+
+.signedUser {
+    margin: 0.5em;
+}
+
+.signInButton {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    padding: 0.3rem;
+}
