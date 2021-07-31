@@ -1,86 +1,26 @@
-import { getSession, signIn, signOut } from "next-auth/client";
+import {getSession, signIn, signOut, useSession} from "next-auth/client";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
+import style from "./index.module.css";
+import Image from 'next/image';
 
-const IndexPage = ({ session }) => {
-  const signInButtonNode = () => {
-    if (session) {
-      return false;
-    }
-
+const IndexPage = () => {
+    const [session, loading] = useSession();
+    console.log(session?.user);
     return (
-        <div>
-          <Link href="/api/auth/signin">
-            <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  signIn();
-                }}
-            >
-              Sign In
-            </button>
-          </Link>
-        </div>
+        <>
+            {!session && <>
+                Not signed in <br/>
+                <button onClick={() => signIn()}>Sign in</button>
+            </>}
+            {session && <>
+                Signed in as {session.user.name}  &nbsp;&nbsp;{session.user.email} <br/>
+                <Image src={session.user.image} width={96} height={96} alt ="user avatar" />
+                <button onClick={() => signOut()}>Sign out</button>
+            </>}
+        </>
     );
-  };
-
-  const signOutButtonNode = () => {
-    if (!session) {
-      return false;
-    }
-
-    return (
-        <div>
-          <Link href="/api/auth/signout">
-            <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  signOut();
-                }}
-            >
-              Sign Out
-            </button>
-          </Link>
-        </div>
-    );
-  };
-
-  if (!session) {
-    return (
-        <div className="hero">
-          <div className="navbar">
-            {signOutButtonNode()}
-            {signInButtonNode()}
-          </div>
-            {/* eslint-disable-next-line react/no-unescaped-entities */}
-          <div className="text">You aren't authorized to view this page</div>
-        </div>
-    );
-  }
-
-  return (
-      <div className="hero">
-        <Head>
-          <title>Index Page</title>
-        </Head>
-        <div className="navbar">
-          {signOutButtonNode()}
-          {signInButtonNode()}
-        </div>
-        <div className="text">Hello world</div>
-      </div>
-  );
-};
-
-export const getServerSideProps = async ({ req }) => {
-  const session = await getSession({ req });
-
-  return {
-    props: {
-      session,
-    },
-  };
 };
 
 export default IndexPage;
