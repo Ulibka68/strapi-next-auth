@@ -31,5 +31,5 @@ yarn dev
 http://localhost:3000/
 
 # Запустить docker для front
-cd frontend
+cd frontend  
 docker build -t nextjs-for-strapi .
